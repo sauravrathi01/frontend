@@ -1,0 +1,106 @@
+
+.shop_section {
+    margin-top: 150px; /* Reduce the margin for mobile view */
+    padding: 10px;    /* Adjust padding */
+}
+
+.shop_list {
+    border: 1px solid #cfbebe;
+    border-radius: 10px;
+    padding: 20px; /* Adjust padding for better spacing */
+    display: flex;
+    margin-bottom: 15px; /* Add space between cards */
+    justify-content: space-between;
+}
+
+.details {
+    text-align: left;
+    margin-bottom: 15px; /* Add spacing between details and icon */
+}
+
+.details p {
+    margin: 5px 0; /* Add space between paragraphs */
+    font-size: 14px; /* Adjust text size for mobile */
+}
+
+.details h5 {
+    margin: 5px 0;
+    font-size: 16px; /* Slightly larger for better readability */
+    color:#009900;
+}
+
+.icon {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    margin-top:16px;
+}
+
+.icon img {
+    width: 24px;
+    height: 24px;
+}
+
+.icon:hover {
+    cursor: pointer;
+}
+
+@media (max-width: 767px) {
+      .shop_section {
+    margin-top: 100px; /* Reduce the margin for mobile view */
+    padding: 10px;    /* Adjust padding */
+    margin-bottom:150px;
+}
+    .shop_list {
+        text-align: center;    /* Center-align content */
+        padding:10px;
+    }
+
+    .details {
+        margin-bottom: 10px;
+    }
+
+    .details p {
+        font-size: 12px;
+    }
+    .details h5 {
+        font-size: 14px;
+    }
+    .icon {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    margin-top: 20px;
+}
+}
+.shop_section .container-fluid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+
+  }
+  .shop_card{
+    margin: 0px auto;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .shop_list {
+    width: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .shop_list {
+      width: calc(45% - 15px); 
+    }
+  }

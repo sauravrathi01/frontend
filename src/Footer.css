@@ -1,0 +1,51 @@
+/* *{
+    border: 1px solid red;
+} */
+
+.icon-text{
+    font-size: 16px;
+    color: black !important;
+}
+.icon-text2{
+    font-size: 14px;
+    color: black;
+    font-weight: 600;
+}
+
+
+/* body{
+    margin-bottom: 60px;
+} */
+
+.footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    border-top: 1px solid grey;
+    z-index: 2000;
+    padding: 10px 0px;
+}
+
+/* .footer .active{
+    background-color: red !important;
+} */
+
+.footer .active i {
+    color: red !important;
+}
+.footer .active .icon-text2{
+    color: red !important;
+}
+
+@media (max-width: 320px){
+    .icon-text{
+        font-size: 17px;
+       
+    }
+    .icon-text2{
+        font-size: 10px;
+        color: #5e5959 !important;
+    }
+}

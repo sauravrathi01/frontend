@@ -1,0 +1,173 @@
+
+.checktext1{
+    font-size: 16px;
+    font-weight: 600;
+}
+.checktext2{
+    font-size: 13px;
+    color: rgb(117, 114, 114);
+    font-weight: 500;
+}
+.checktext5{
+    font-size: 16px;
+    color: rgb(117, 114, 114);
+    font-weight: 500;
+}
+.checktext3{
+    font-size: 17px;
+    font-weight: 700;    
+}
+.pipebg2{
+    background-color: rgb(223, 240, 255);
+}
+.checktext4{
+    font-size: 17px;
+    color: rgb(26, 99, 207);
+    font-weight: 700;
+}
+.totalpay{
+    color: rgb(26, 99, 207);
+}
+.placed-order{
+    font-size: 14px;
+    background-color: rgb(0 91 0);
+    
+}
+.btnred{
+    background-color: red;
+}
+.btngreen{
+    background-color: green;
+}
+.modaltext{
+    font-size: 14px;
+    color: rgb(83, 83, 83);
+}
+.main-image{
+    object-fit: cover;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: white;
+    height: 210px;
+}
+
+.thumbnail-img {
+    width: fit-content;
+    height: 83px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+  .thumbnail-img {
+    
+    width: fit-content;
+    height: 80px; 
+    object-fit: cover; /* Crop without distortion */
+    border-radius: 8px; 
+    border: 1px solid #ccc;
+    padding: 5px;
+    /* transition: transform 0.2s ease-in-out; */
+  }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+
+  .modal-content {
+    background: white !important;
+    padding: 40px 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    min-width: 250px;
+    width: 30%;
+  }
+
+  .cart-back {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .cart-sidebar1{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50%;
+    background-color: rgb(119, 113, 113);
+    box-shadow: "0px 0px 10px rgba(0, 0, 0, 0.2)";
+    z-index: 1000;
+    overflow: auto;
+  }
+
+  .modal-buttons {
+    margin-top: 20px;
+  }
+  
+  .modal-buttons .btn {
+    margin: 5px;
+  }
+
+@media (max-width: 512px){
+    .thumbnail-img {
+        width: fit-content;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 5px;
+    }
+    .main-image {
+        object-fit: cover;
+        border-radius: 5px; 
+        /* border: 2px solid #ddd; */
+        padding: 10px;
+        background-color: white;
+      }
+    .checktext1{
+        font-size: 12px;
+    }
+    .checktext2{
+        font-size: 10px;
+    }
+    .checktext3{
+        font-size: 12px;
+    }
+    .checktext4{
+        font-size: 13px;
+    }
+    .checktext5{
+        font-size: 11px;
+    }
+    .placed-order{
+        font-size: 11px;
+    }
+    .modaltext{
+        font-size: 12px;
+    }
+    .modal-content{
+        padding: 20px;
+        width: 50% !important;
+    }
+}

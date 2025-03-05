@@ -1,0 +1,113 @@
+.slottext1{
+    font-size: 15px;
+    color: rgb(25, 168, 190);
+    font-weight: bold;
+}
+
+.slottext2{
+    font-size: 11px;
+    color: rgb(120, 121, 121);
+}
+.slottext3{
+    font-size: 11px;
+    font-weight: 500;
+}
+.slottext4{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.slotclr2{
+    color: rgb(0, 123, 60);
+}
+
+.slotclr1{
+    color: rgb(228, 50, 73);
+}
+
+.reward-text1{
+    font-size: 14px;
+    font-weight: 500;
+}
+.reward-text2{
+    font-size: 25px;
+    font-weight: 600;
+  
+}
+
+.slotbg{
+    background-color: aliceblue;
+}
+
+.floating-button {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: #007bff;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.floating-button:hover {
+    background-color: #0056b3;
+}
+
+.slot-btn1{
+    background-color: rgb(5, 196, 5);
+    font-size: 12px;
+    color: white;
+}
+.slot-btn2{
+    background-color: rgb(7, 107, 144);
+    font-size: 12px;
+    color: white;
+}
+
+.level-text{
+    font-size: 17px;
+    font-weight: 700;
+}
+.credit-text{
+    font-size: 17px;
+    font-weight: bold;
+    color: green;
+}
+.debit-text{
+    font-size: 17px;
+    font-weight: bold;
+    color: red;
+}
+.date-text{
+    font-size: 15px;
+    color: rgb(83, 83, 83);
+    font-weight: 500;
+}
+
+@media (max-width: 512px){
+    .reward-text1{
+        font-size: 11px;
+    }
+    .reward-text2{
+        font-size: 19px;
+    }
+    .level-text{
+        font-size: 13px;
+    }
+    .credit-text{
+        font-size: 14px;
+    }
+    .debit-text{
+        font-size: 14px;
+    }
+    .date-text{
+        font-size: 12px;
+    }
+}

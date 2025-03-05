@@ -1,0 +1,49 @@
+
+
+.aboutbg{
+    background-image: url('./images/about.jpeg');
+    background-position : 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-bottom: 170px;
+    /* margin-top: 87px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: auto 0; */
+    display: flex;
+  }
+  .peoplebg{
+    background-image: url('./images/people.jpg');
+    background-position : 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding-bottom: 500px;
+    /* height: 100vh; */
+    margin-top: -160px;
+  }
+  .aboutcontent{
+    color: #0e2b5c;
+  }
+  .historybg{
+    background-color: #181223;
+  }
+
+
+  
+@media only screen and (max-width: 320px){
+    .aboutbg{
+        padding-bottom: 150px;
+        text-align: center;
+    }
+    .peoplebg{
+      background-image: url('./images/people.jpg');
+      background-position : 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      padding-bottom: 200px;
+      /* height: 100vh; */
+      margin-top: -66px;
+    }
+
+}

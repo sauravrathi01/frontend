@@ -1,0 +1,80 @@
+.dark-mode .aboutcontent{
+    color: white;
+  }
+  
+  .dark-mode .visionbg{
+    background-color: #121212;
+  }
+  
+  .aboutcontent{
+      color: #0e2b5c;
+    }
+  
+    .colbg1{
+      background-color: #32EEEE;
+    }
+    .colbg2{
+      background-color: #231834;
+    }
+  
+    .colbg3{
+      background-color: #0e2b5c;
+    }
+    .visionbg{
+      background-color: #f3f6f9;
+    }
+  
+    .teambg{
+      background-image: url("images/bg-team.jpg");
+      background-position : 100%;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      padding-bottom: 150px;
+      
+      /* height: 100vh; */
+      /* margin-top: 0px; */
+    }
+    .teamcontent{
+      padding-top: 170px;
+  }
+  
+  .careercontent{
+    padding-top: 200px;
+    margin-top: 100px;
+  }
+  
+  .careerbg{
+    background-image: url("images/careerbg.png");
+    background-position : 100%;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      padding-bottom: 150px;
+  }
+  
+  .patternbg{
+    
+    background-color: #f55842 ;
+    background-position : 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding-bottom: 60px;
+  }
+  
+  .patterncontent{
+    padding-top: 70px;
+  }
+  
+    @media only screen and (max-width: 320px){
+      .teambg{
+          background-image: url("images/bg-team.jpg");
+          background-position : 100%;
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          padding-bottom: 50px;
+          margin-top: 70px;
+      }
+      .teamcontent{
+          padding-top: 70px;
+      }
+    }
+  
