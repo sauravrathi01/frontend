@@ -1,6 +1,5 @@
-
-import React, {useState, useEffect} from 'react';
-import { useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import './Header.css';
 import mrlogo from "./images/mercart-logo.png";
@@ -10,130 +9,92 @@ const Header = ({ showSearch }) => {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  // const [totalCart, settotalCart] = useState(0);
   const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
   const userName = localStorage.getItem('user_name');
   const userPhone = localStorage.getItem('user_mobile');
-
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(() => {
-        const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-        setIsLoggedIn(loggedIn);
-    }, []);
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedIn);
+  }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cartCount");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("user_name");
+    localStorage.removeItem("user_email");
+    localStorage.removeItem("user_mobile");
+    localStorage.removeItem("profile_img");
+    localStorage.removeItem("isLoggedIn");
 
-  
+    setIsLoggedIn(false);
+    setCartCount(0);
 
-    const handleCloseMobileMenu = (e) => {
-    
-      if (!e.target.closest('.mobile-menu') && !e.target.closest('.navbar-toggler')) {
-        setShowMobileMenu(false);
-        document.body.style.overflow = 'auto';
-      }
-    };
+    // Dispatch event to notify other components to update cart count
+    window.dispatchEvent(new Event("cartUpdated"));
 
-    const handleLogout=()=>{
-      // localStorage.removeItem('token')
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("user_name");
-      localStorage.removeItem("user_email");
-      localStorage.removeItem("user_mobile");
-      localStorage.removeItem("profile_img");
-      localStorage.removeItem("isLoggedIn"); 
-      setIsLoggedIn(false);
-      navigate('/login');
+    navigate("/login");
+  };
+
+  const handleCloseMobileMenu = (e) => {
+    if (!e.target.closest('.mobile-menu') && !e.target.closest('.navbar-toggler')) {
+      setShowMobileMenu(false);
+      document.body.style.overflow = 'auto';
     }
-    
+  };
 
-    const handleCloseSideMenu = (e) => {
-      if (!e.target.closest('.side-menu')) {
-        setShowSideMenu(false);
-      }
+  const handleClickOutside = (e) => {
+    e.stopPropagation();
+    setIsCartOpen(false);
+  };
+
+  const toggleCartSidebar = (e) => {
+    e.stopPropagation();
+    setIsCartOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (isCartOpen) {
+      document.getElementById('uniqueprod').addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-    
-  
-    const handleClickOutside = (e) => {
-      console.log('Clicked', e.target);
-      e.stopPropagation();
-     setIsCartOpen(false);
+  }, [isCartOpen]);
+
+  useEffect(() => {
+    if (showMobileMenu) {
+      document.addEventListener('click', handleCloseMobileMenu);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.removeEventListener('click', handleCloseMobileMenu);
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.removeEventListener('click', handleCloseMobileMenu);
+      document.body.style.overflow = 'auto';
     };
-  
-    const toggleCartSidebar = (e) => {
-      
-      e.stopPropagation();
-      setIsCartOpen((prev) => !prev);
+  }, [showMobileMenu]);
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      const count = JSON.parse(localStorage.getItem("cart"))?.length || 0;
+      setCartCount(count);
     };
-  
-    useEffect(() => {
-      if (isCartOpen) {
-        document.getElementById('uniqueprod').addEventListener("mousedown", handleClickOutside);
-      } else {
-        document.removeEventListener("mousedown", handleClickOutside);
-      }
-  
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [isCartOpen]);
-    
 
-    useEffect(() => {
-      if (showMobileMenu) {
-        document.addEventListener('click', handleCloseMobileMenu);
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.removeEventListener('click', handleCloseMobileMenu);
-        document.body.style.overflow = 'auto';
-      }
-  
-      return () => {
-        document.removeEventListener('click', handleCloseMobileMenu);
-        document.body.style.overflow = 'auto';
-      };
-    }, [showMobileMenu]);
+    updateCartCount();
+    window.addEventListener("cartUpdated", updateCartCount);
 
-
-    useEffect(() => {
-      if (showSideMenu) {
-        document.addEventListener('click', handleCloseSideMenu);
-      } else {
-        document.removeEventListener('click', handleCloseSideMenu);
-      }
-  
-      return () => {
-        document.removeEventListener('click', handleCloseSideMenu);
-      };
-    }, [showSideMenu]);
-
-
-    useEffect(()=>{
-      const count = localStorage.getItem('cartCount');
-      if(count){
-        setCartCount(parseInt(count, 10));
-      };
-
-      const handleCartUpdate =(event)=>{
-        setCartCount(event.detail);
-      };
-
-      window.addEventListener("cartUpdated", handleCartUpdate);
-
-      return ()=>{
-        window.removeEventListener("cartUpdated", handleCartUpdate);
-      };
-    }, []);
-
-    // useEffect(() => {
-    //   console.log("isLoggedIn:", isLoggedIn);
-    // }, [isLoggedIn]);
-    
-    // useEffect(() => {
-    //   console.log("showMobileMenu:", showMobileMenu);
-    // }, [showMobileMenu]);
+    return () => {
+      window.removeEventListener("cartUpdated", updateCartCount);
+    };
+  }, []);
 
     return (
       <>

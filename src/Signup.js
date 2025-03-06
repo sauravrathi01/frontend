@@ -56,14 +56,14 @@ const Signup = () => {
     };
 
     // Validate referral code when it changes
-    useEffect(() => {
-        if (formData.refer_user_id.length === 10) {
-            checkReferralCode(formData.refer_user_id);
-        } else {
-            setIsReferralValid(null);
-            setErrorMessage(""); 
-        }
-    }, [formData.refer_user_id]);
+    // useEffect(() => {
+    //     if (formData.refer_user_id.length === 11) {
+    //         checkReferralCode(formData.refer_user_id);
+    //     } else {
+    //         setIsReferralValid(null);
+    //         setErrorMessage(""); 
+    //     }
+    // }, [formData.refer_user_id]);
 
 
     useEffect(()=>{
