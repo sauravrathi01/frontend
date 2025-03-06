@@ -92,11 +92,11 @@ const ProductList = () => {
             }}
             >
             <div className="row my-2 productlist-bg rounded-2 mx-1 shadow py-2 border my-md-5 pe-0" key={product.category_id}>
-                <div className="col-3 col-md-4 p-0">
-                    {product.product_image ? (
+                <div className="col-3 col-md-4 p-0 my-auto text-center">
+                    {product.product_image ? ( 
                         <img
                             src={`${baseUrl}${product.product_image}`}
-                            className="phoneimg p-1"
+                            className="phoneimg"
                             alt={product.product_name}
                         />
                     ) : (
