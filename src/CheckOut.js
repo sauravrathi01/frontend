@@ -1,8 +1,8 @@
 
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link, useParams } from "react-router-dom";
 import "./Checkout.css";
 import Swal from "sweetalert2";
 import thumbnail from "./images/thumbnail.png";
@@ -10,6 +10,7 @@ import qs from "qs";
 
 const CheckOut=()=>{
   const navigate = useNavigate();
+  const {productId} = useParams;
     const location = useLocation();
   const [cart, setCart] = useState([]); // For storing cart items
   const [totalAmount, setTotalAmount] = useState(0); // Total product price before discount
@@ -19,9 +20,30 @@ const CheckOut=()=>{
   const [isCashbackApplied, setIsCashbackApplied] = useState(false);
   const [isModalOpen , setIsModalOpen] = useState(false);
 
-  const savedData = JSON.parse(localStorage.getItem("saveddata")) || {};
+  const [product, setProduct] = useState(null);
+  const [productImage, setProductImage] = useState("");
 
-  const { product_image, base_url} = location.state || savedData
+  useEffect(() => {
+    // Retrieve saved product details
+    const savedData = JSON.parse(localStorage.getItem("saveddata")) || {};
+    const savedProducts = JSON.parse(localStorage.getItem("savedProducts")) || {};
+
+    console.log("Saved Data from localStorage:", savedData);
+    console.log("Saved Products from localStorage:", savedProducts);
+
+    // Ensure productId is correctly matched
+    if (savedData.id === productId) {
+      setProduct(savedData);
+    }
+
+    // Fetch product image
+    const image = savedProducts[productId] || savedData?.product_image;
+    setProductImage(image);
+
+  }, [productId]);
+
+
+
 
 
   const handleOpenModal =()=>{
@@ -247,11 +269,13 @@ const handleProceed = async () => {
                 <div className="col-12 pipebg2 mt-3">
                   <div className="row shadow-sm p-md-3 p-1 mb-md-3 rounded">
                     <div className="col-3 col-md-2">
-                    { product_image ? (
-                          <img src={`${base_url}${product_image}`} className="img-fluid rounded-4" alt="Product" />
+                    {/* { savedData.product_image ? (
+                          <img src={savedData.product_image} className="img-fluid" alt={savedData.product_name} />
                         ) : (
                          <img src={thumbnail}  className="img-fluid rounded-4" alt="product"/>
-                        )}
+                        )} */}
+
+                  <img src={`${productImage}`} className="img-fluid rounded-4" alt={product.product_name} />
                      
                     </div>
 

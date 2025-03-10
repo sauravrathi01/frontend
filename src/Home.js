@@ -179,7 +179,8 @@ const Home = () => {
               ))
             ) : (
               // <p>No categories available</p>
-              <h4 className="text-center"><i class="fa-solid fa-spinner"></i></h4>
+              // <h4 className="text-center"><i class="fa-solid fa-spinner"></i></h4>
+              <img src="https://d37oebn0w9ir6a.cloudfront.net/account_6827/customerio-loading-animation_244ab356f603e104472b77ceb1e5add4.gif" className="img-fluid h-100"/>
             )}
           </div>
 

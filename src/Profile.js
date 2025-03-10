@@ -82,11 +82,20 @@ useEffect(() => {
         <div className="container-fluid p-0  pt-5 pb-4 overflow-hidden body-bg">
            <div className="bg-white rounded-2 m-2">
            <div className="row py-1 text-center">
-                <h5><i class="fa-solid fa-coins text-warning"></i>
+             <div className="col-md-4 col-6">
+             <h5><i class="fa-solid fa-coins text-warning"></i>
                 </h5>
                 {/* <h6 className="text-center">{userData?.availBalance ?? "N/A"}</h6> */}
                 <h6 className="text-center">{availBalance}</h6>
                 <div className="profile-text1">AVAILABLE BALANCE</div>
+             </div>
+             <div className="col-md-4 col-6">
+             <h5><i class="fa-solid fa-coins text-warning"></i>
+                </h5>
+                {/* <h6 className="text-center">{userData?.availBalance ?? "N/A"}</h6> */}
+                <h6 className="text-center">{userData?.availPoints ?? "N/A"}</h6>
+                <div className="profile-text1">AVAILABLE POINTS</div>
+             </div>
             </div>
             <div className="row py-2 justify-content-center p-3">
                 <NavLink to='/subscribe-users' className="col-6 col-md-3 pe-1">
@@ -105,9 +114,9 @@ useEffect(() => {
             <i class="fa-solid fa-grip-vertical"></i>
            </div>
      
-            <div className="col-8 ps-0 my-auto text-start">
+            <NavLink to="/user-profile" className="text-decoration-none text-dark col-8 ps-0 my-auto text-start">
            <div className="profile-text2 ms-2">Personal Details</div>
-            </div>
+            </NavLink>
             <div className="col-2"></div>
             <div className="col-1 text-end pe-0 my-auto">
        
@@ -165,7 +174,7 @@ useEffect(() => {
             <div className="col-8 ps-0 my-auto text-start">
            <div className=" profile-text2 ms-2" style={{cursor: 'pointer'}}>My Total Orders</div>
             </div>
-            <div className="col-2">{userData?.totalOrderAmt ?? "N/A"}</div>
+            <div className="col-2">{userData?.totalOrders ?? "N/A"}</div>
             <div className="col-1 text-end pe-0 my-auto">
        
               <h6><i class="fa-regular fa-circle-right logotext"></i></h6>

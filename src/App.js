@@ -63,43 +63,21 @@ function App() {
     }
 }, []);
 
+useEffect(()=>{
+  const checkAuth = ()=>{
+    setIsLoggedIn(!!localStorage.getItem('token'));
+    setUserId(localStorage.getItem("userId") || "");
+  };
+
+  window.addEventListener("storage", checkAuth);
+  return () => {
+    window.removeEventListener("storage", checkAuth);
+};
+}, []);
+
 const baseUrl = "https://mrcartonline.com/admin";
 
-//   useEffect(() => {
- 
-//   const token = localStorage.getItem('token');
-// console.log("Token from localStorage:", token); 
-// if (token) {
-//   setIsLoggedIn(true);
-//   setUserId(localStorage.getItem('user_id'));
-//   console.log("Token from localStorage:", token);
-// } else {
-//   setIsLoggedIn(false);
-// }
 
-//   }, []);
-
-
-// useEffect(() => {
-//   const userId = localStorage.getItem("user_id");
-//   if (userId) {
-//       setIsLoggedIn(true);  
-//   }
-// }, []);
-
-  // useEffect(() => {
-  //   const handleStorageChange = () => {
-  //     setIsLoggedIn(!!localStorage.getItem("token"));
-  //     setUserId(localStorage.getItem("user_id"));
-  //   };
-
-  //   window.addEventListener("storage", handleStorageChange);
-  //   return () => {
-  //     window.removeEventListener("storage", handleStorageChange);
-  //   };
-  // }, []);
-
-  // console.log("isLoggedIn state in App.js:", isLoggedIn);
 
   return (
     <div>

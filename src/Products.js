@@ -63,18 +63,18 @@ const Products = () => {
               className="col-12 text-center rounded-3 my-md-3 my-1 border border-2 shadow py-2 py-md-3"
               key={product.brand_id}>
               <div className="row">
+              
               <div className="col-3">
-              {product.brand_image ? (
-                <img
-                  src={`${baseUrl}${product.brand_image}`}
-                  alt={product.brand_name}
-                  className="logoimg p-1"
-                 
-                />
-              ) : (
-                <img src={thumbnail}  className="logoimg p-1"/>
-              )}
-              </div>
+              <img
+                src={product.brand_image ? `${baseUrl}${product.brand_image}` : thumbnail}
+                alt={product.brand_name}
+                className="logoimg p-1"
+                onError={(e) => {
+                  e.target.src = thumbnail; 
+                }}
+              />
+            </div>
+
               <div className="col-6 ps-0 my-auto text-start">
               <h6 className="logotext1 fw-bold mb-0">{product.brand_name}</h6>
               </div>
@@ -91,7 +91,8 @@ const Products = () => {
           ))
         ) : (
         //   <p>No products available for this category</p>
-        <h4 className="text-center mt-5"><i class="fa-solid fa-spinner"></i></h4>
+        // <h4 className="text-center mt-5"><i class="fa-solid fa-spinner"></i></h4>
+        <img src="https://d37oebn0w9ir6a.cloudfront.net/account_6827/customerio-loading-animation_244ab356f603e104472b77ceb1e5add4.gif" className="h-100 w-100"/>
         )}
       </div>
     </div>

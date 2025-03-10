@@ -22,10 +22,11 @@ const ProductDetails =()=>{
 
   const [mainImage, setMainImage] = useState(null);
 
-  // Set the initial main image when productInfo is available
+
+
   useEffect(() => {
     if (productInfo.length > 0) {
-      setMainImage(productInfo[0].product_image); // Set 0th index image
+      setMainImage(productInfo[0].product_image); 
     }
   }, [productInfo]);
 
@@ -182,57 +183,66 @@ const ProductDetails =()=>{
         </div>
             </div>
 
-            <div className="row mt-5 pt-3 pt-md-5 bg-white py-4">
-      {Array.isArray(productInfo) && productInfo.length > 0 ? (
-        productInfo.map((item, index) => {
-          if (index === 0) {
-            return (
-              <>
-                <div className="col-12 col-md-5 p-0 text-center" key={index}>
-                  {mainImage ? (
-                    <img
-                      src={`${message}${mainImage}`}
-                      alt={product?.product_name || 'Product Image'}
-                      className="img-fluid main-image"
-                    />
-                  ) : (
-                    <div className="img-fluid " style={{ backgroundColor: '#ccc' }}></div>
-                  )}
-                </div>
-                <div className="col-6 ms-5 d-none d-md-block my-auto">
+
+
+
+
+
+ <div className="row mt-5 pt-3 pt-md-5 bg-white py-4">
+  {Array.isArray(productInfo) && productInfo.length > 0 ? (
+    (() => {
+      // Ensure mainImage is always included in the first 4 images
+      let images = [mainImage, ...productInfo.map((img) => img.product_image)]
+        .filter((img, index, self) => img && self.indexOf(img) === index) // Remove duplicates
+        .slice(0, 4); // Show only 4 images
+
+      return (
+        <>
+    
+          <div className="col-12 col-md-5 p-0 text-center">
+            {mainImage ? (
+              <img
+                src={`${message}${mainImage}`}
+                alt={product?.product_name || "Product Image"}
+                className="img-fluid main-image"
+              />
+             
+            ) : (
+              <div className="img-fluid" style={{ backgroundColor: "#ccc" }}></div>
+            )}
+           
+          </div>
+          <div className="col-6 ms-5 d-none d-md-block my-auto">
                   <h4 className="categorytext">{product?.product_name}</h4>
                   <div className="producttext1">{product?.description}</div>
                 </div>
-              </>
-            );
-          }
 
-          if (index <= 3) {
-            return (
-              <div className="col-4 col-md-1 text-center p-0 " key={index}>
-                {item.product_image ? (
-                  <img
-                    src={`${message}${item.product_image}`}
-                    alt={product?.product_name || 'Product Image'}
-                    className=" thumbnail-img"
-                    onClick={() => setMainImage(item.product_image)}
-                    style={{ cursor: 'pointer' }}
-                  />
-                ) : (
-                  <div className="img-fluid" style={{ backgroundColor: '#ccc' }}></div>
-                )}
+         
+      
+            {images.map((img, index) => (
+              <div className="col-3 col-md-1 text-center p-0" key={index}>
+                <img
+                  src={`${message}${img}`}
+                  alt={product?.product_name || "Product Image"}
+                  className={`thumbnail-img ${mainImage === img ? "active-thumbnail" : ""}`}
+                  onClick={() => setMainImage(img)}
+                  style={{ cursor: "pointer", border: 'none'}}
+                />
               </div>
-            );
-          }
+            ))}
+    
+        </>
+      );
+    })()
+  ) : (
+    <h4 className="text-center mt-5">
+      {/* <i className="fa-solid fa-spinner"></i> */}
+      <img src="https://d37oebn0w9ir6a.cloudfront.net/account_6827/customerio-loading-animation_244ab356f603e104472b77ceb1e5add4.gif" className="img-fluid h-100"/>
+    </h4>
+  )}
+</div> 
 
-          return null;
-        })
-      ) : (
-        <h4 className="text-center mt-5">
-          <i className="fa-solid fa-spinner"></i>
-        </h4>
-      )}
-    </div>
+
  
          </div>
         
@@ -364,22 +374,24 @@ const ProductDetails =()=>{
       decreaseQuantity,
       discount: product?.discount,       // Add discount
       special_discount: product?.special_discount,
-      // product_image: productInfo.length > 1 ? productInfo[1].product_image : ""
-      product_image: productInfo.length > 1 ? `${message}${productInfo[1].product_image}` : "",
-  
+      product_image: mainImage ? `${message}${mainImage}` : "",
     }
   }}
 
   className="text-decoration-none text-dark"
+ 
+
   onClick={() => {
-    // const selectedImage = productInfo.length > 1 ? productInfo[1].product_image : "";
-  
+    let savedProducts = JSON.parse(localStorage.getItem("savedProducts")) || {};
+    savedProducts[productId] = mainImage ? `${message}${mainImage}` : "";
+    localStorage.setItem("savedProducts", JSON.stringify(savedProducts));
+
     localStorage.setItem(
       "saveddata",
       JSON.stringify({
+        id: productId,
         product_name: product?.product_name,
-        product_image: product?.product_image,
-        // product_image: selectedImage ? `${message}${selectedImage}` : "",
+        product_image: mainImage ? `${message}${mainImage}` : "",
         product_mrp: product?.product_mrp,
         discount: product?.discount,
         special_discount: product?.special_discount,
@@ -387,7 +399,13 @@ const ProductDetails =()=>{
         message,
       })
     );
-  }}
+    console.log('Stored in localstorage', JSON.parse(localStorage.getItem("saveddata")));
+}}
+
+
+
+
+  
 >
 
 <footer>
@@ -410,6 +428,58 @@ const ProductDetails =()=>{
   </div>
 </footer>
 </Link>
+
+{/* <Link  
+  to={{ 
+    pathname: `/check-out/${productId}`, 
+    search: `?mcn=${mcn}&bn=${bn}&ci=${ci}&bi=${bi}`, 
+    state: {
+      product,
+      updateCart,
+      increaseQuantity,
+      decreaseQuantity,
+      discount: product?.discount,
+      special_discount: product?.special_discount,
+      product_image: mainImage ? `${message}${mainImage}` : "",
+    }
+  }}
+  className="text-decoration-none text-dark"
+  onClick={() => {
+    // Get existing saved data
+    let savedProducts = JSON.parse(localStorage.getItem("savedProducts")) || {};
+
+    // Store the product image and details using productId as the key
+    savedProducts[productId] = {
+      product_name: product?.product_name,
+      product_image: mainImage ? `${message}${mainImage}` : "",
+      product_mrp: product?.product_mrp,
+      discount: product?.discount,
+      special_discount: product?.special_discount,
+      base_url: message,
+    };
+
+    // Save updated data in localStorage
+    localStorage.setItem("savedProducts", JSON.stringify(savedProducts));
+  }}
+>
+  <footer>
+    <div className="row bg-white pt-3 pb-2 border border-2 border-secondary mx-0">
+      <div className="col-2 text-end my-auto">
+        <i className="fa-solid fa-cart-shopping text-primary fs-4 position-relative"> 
+          {cartCount > 0 && <span className="badge bg-danger position-absolute top-0 start-100 translate-middle p-1 rounded-circle">{cartCount}</span>}
+        </i>
+      </div>
+      <div className="col-6">
+        <span className="totaltext text-secondary">TOTAL </span>
+        <span className="pricetext">&#8377; {totalPrice.toFixed(2)}</span>
+      </div>
+      <div className="col my-auto me-3 text-end">
+        <div className="logotext1 fw-bold">Proceed</div>
+      </div>
+    </div>
+  </footer>
+</Link> */}
+
         </>
     )
 }

@@ -19,7 +19,7 @@ const ChangePassword =()=>{
       <div className="row mt-5 pt-5">
         <div className="col-md-8 col-10 mx-auto">
         <input className="border-0 border-bottom border-dark w-100 " placeholder="OLD PASSWORD"/>
-        </div>
+        </div>  
         <div className="col-md-8 col-10 mx-auto pt-3">
         <input className="border-0 border-bottom border-dark w-100 " placeholder="NEW PASSWORD"/>
         </div>

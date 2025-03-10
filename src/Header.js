@@ -30,12 +30,13 @@ const Header = ({ showSearch }) => {
     localStorage.removeItem("user_mobile");
     localStorage.removeItem("profile_img");
     localStorage.removeItem("isLoggedIn");
-
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
     setCartCount(0);
 
     // Dispatch event to notify other components to update cart count
     window.dispatchEvent(new Event("cartUpdated"));
+    window.dispatchEvent(new Event("storage"));
 
     navigate("/login");
   };

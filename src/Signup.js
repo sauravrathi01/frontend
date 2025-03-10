@@ -10,7 +10,10 @@ import 'jquery-validation';
 import './Login.css';
 
 const Signup = () => {
+    // const [referralCode, setReferralCode] = useState("");
+    const [referralCode, setReferralCode] = useState("");
     const [loading, setLoading] = useState(false);
+    const [userName, setUserName] = useState(false);
     const [formData, setFormData] = useState({
         user_name: '',
         user_email: '',
@@ -30,6 +33,8 @@ const Signup = () => {
     const [villages,setVillages] = useState([]);
     const [selectedSubDistrict, setSelectedSubDistrict] = useState('');
     const navigate = useNavigate();
+
+   
 
     useEffect(() => {
         $('#signupForm').validate({
@@ -53,18 +58,13 @@ const Signup = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
+        
+        if(name === 'refer_user_id'){
+            setReferralCode(value)
+        }
     };
 
-    // Validate referral code when it changes
-    // useEffect(() => {
-    //     if (formData.refer_user_id.length === 11) {
-    //         checkReferralCode(formData.refer_user_id);
-    //     } else {
-    //         setIsReferralValid(null);
-    //         setErrorMessage(""); 
-    //     }
-    // }, [formData.refer_user_id]);
-
+ 
 
     useEffect(()=>{
         fetchDistricts();
@@ -82,15 +82,31 @@ const Signup = () => {
     }
    }, [selectedSubDistrict])
 
-    const checkReferralCode = async (referralCode) => {
+    const checkReferralCode = async () => {
+        if(!referralCode) return;
         try {
-            const res = await axios.post('https://mrcartonline.com/kitty/index.php/User/getUserDetailbyMobile', { user_mobile: referralCode });
+            
+            const res = await axios.post('https://mrcartonline.com/kitty/index.php/User/getUserDetailbyMobile', 
+             { user_mobile: referralCode }
+            );
 
-            if (res.data.status) {
+            console.log("Referral api",res.data);
+
+            if (res.data?.status && Array.isArray(res.data.data) && res.data.data.length > 0) {
+                const fetchedUsername = res.data.data[0].user_name || ""
                 setIsReferralValid(true);
                 setErrorMessage("");
+                setUserName(fetchedUsername); 
+                console.log(res.data.data[0].user_name);
+
+                setFormData((prevData)=>({
+                    ...prevData,
+                    user_name: fetchedUsername
+                }))
+
             } else {
                 setIsReferralValid(false);
+                setUserName("");
                 setErrorMessage("Invalid referral code. Please enter a valid one.");
             }
         } catch (error) {
@@ -98,6 +114,19 @@ const Signup = () => {
             setErrorMessage("Failed to verify referral code. Try again later.");
         }
     };
+
+    // const debouncedCheckReferralCode = debounce(checkReferralCode, 800);
+    // const handleInputChange = (e) => {
+    //     const mobileNumber = e.target.value;
+    //     setReferralCode(mobileNumber);
+    //     debouncedCheckReferralCode(mobileNumber);
+    // };
+
+    // useEffect(() => {
+    //     return () => {
+    //         debouncedCheckReferralCode.cancel();
+    //     };
+    // }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -222,9 +251,11 @@ const Signup = () => {
                     </div>
                     <div className='row pt-3 pt-md-4'>
                         <div className='col-md-8 mx-auto'>
-                            {/* <h6><label htmlFor="user_mobile" className="form-label mb-0">Mobile*</label></h6> */}
                             <input type="text" className='w-100 border-0 border-bottom border-1 border-secondary' name="user_mobile" placeholder="MOBILE" value={formData.user_mobile} onChange={handleChange} id='user_mobile' required />
                         </div>
+                        {/* <div className='col-md-8 mx-auto d-none'>
+                            <input type="text" className='w-100 border-0 border-bottom border-1 border-secondary' name="user_name" placeholder="USER NAME" value={formData.user_name} id='user_name' disabled />
+                        </div> */}
                     </div>
                     <div className='row pt-3 pt-md-4'>
                         <div className='col-md-8 mx-auto'>
@@ -248,12 +279,17 @@ const Signup = () => {
                                 className='w-100 border-0 border-bottom border-1 border-secondary'
                                 name="refer_user_id"
                                 placeholder="REFERRAL MOBILE NO"
-                                value={formData.refer_user_id}
+                                value={referralCode}
                                 onChange={handleChange}
+                               onBlur={checkReferralCode}
                                 id='refer_user_id'
                             />
-                            {isReferralValid === false && <p className="text-danger mt-2"> {errorMessage}</p>}
                         </div>
+                        { isReferralValid &&(
+                             <div className='col-md-8 mx-auto'>
+                             <input type="text" className='w-100 border-0 border-bottom border-1 border-secondary' name="user_name" placeholder="USER NAME" value={formData.user_name} id='user_name' readOnly />
+                         </div>
+                        )}
                     </div>
 
                  
