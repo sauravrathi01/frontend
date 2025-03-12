@@ -19,6 +19,17 @@ input::placeholder{
     font-weight: 500;
 
 }
+.custom-swal-popup {
+    font-family: "Arial", sans-serif !important;
+    border-radius: 10px !important;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
+    width: 70%;
+    font-size: 14px;
+}
+.swal-text {
+    font-weight: bold;
+    font-size: 13px;
+}
 
 @media (max-width:512px){
     input::placeholder{
@@ -31,6 +42,17 @@ input::placeholder{
         padding: 3px 0px !important;
     }
     .user-note{
+        font-size: 12px;
+    }
+    .custom-swal-popup {
+        font-family: "Arial", sans-serif !important;
+        border-radius: 10px !important;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
+        width: 100%;
+        font-size: 12px;
+    }
+    .swal-text {
+        font-weight: bold;
         font-size: 12px;
     }
 }

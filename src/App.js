@@ -43,6 +43,9 @@ import ShopList from './ShopList';
 import PaymentConfirmation from './PaymentConfirmation';
 import MyOrders from './MyOrders';
 import TransactionDetails from './TransactionDetails';
+import RedeemPoints from './RedeemPoints';
+import WithdrawHistory from './WithdrawHistory';
+import Practice from './practice';
 
 function App() {
   const location = useLocation();
@@ -121,6 +124,9 @@ const baseUrl = "https://mrcartonline.com/admin";
         <Route path='/payment-confirmation' element={<PaymentConfirmation/>}/>
         <Route path='/orders' element={<MyOrders/>}/>
         <Route path='/transaction-details/:type_id' element={<TransactionDetails/>}/>
+        <Route path='/redeem-points' element={<RedeemPoints/>}/>
+        <Route path='/withdraw-history' element={<WithdrawHistory/>}/>
+        <Route path='/practice' element={<Practice/>}/>
       </Routes>
 
       {showFooter && <Footer isLoggedIn={isLoggedIn} />}

@@ -234,7 +234,7 @@ const Header = ({ showSearch }) => {
                   ) : (
                     <li className="nav-item mx-2">
                       <NavLink to="/login" className="btn btn-primary py-1"  style={{ cursor: 'pointer' }}>
-                        Signup
+                        Login
                       </NavLink>
                     </li>
                   )}
@@ -248,7 +248,7 @@ const Header = ({ showSearch }) => {
 {showMobileMenu && (
   <div className='mobile-menu'>
     <div className="row">
-      <div className="col-10 col-md-9">
+      <div className="col-11 col-md-9">
         <img src={mrlogo} className='img-fluid' />
         <h5 className="navname pt-2 mb-0">{userName}</h5>
         <p className="numfont">{userPhone}</p>
@@ -294,9 +294,9 @@ const Header = ({ showSearch }) => {
             </NavLink>
           </>
         ) : (
-          <NavLink to='/signup' className="col-12 my-md-2 my-1 text-decoration-none text-dark">
+          <NavLink to='/login' className="col-12 my-md-2 my-1 text-decoration-none text-dark">
             <h6 className="itemsfont" style={{ cursor: 'pointer' }}>
-              <i className="fa-solid fa-arrow-right-from-bracket itemsfont2"></i> Signup
+              <i className="fa-solid fa-arrow-right-from-bracket itemsfont2"></i> Login
             </h6>
           </NavLink>
         )}

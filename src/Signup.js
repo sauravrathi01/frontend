@@ -10,22 +10,21 @@ import 'jquery-validation';
 import './Login.css';
 
 const Signup = () => {
-    // const [referralCode, setReferralCode] = useState("");
     const [referralCode, setReferralCode] = useState("");
     const [loading, setLoading] = useState(false);
-    const [userName, setUserName] = useState(false);
+    const [users, setUsers] = useState([]);
     const [formData, setFormData] = useState({
         user_name: '',
         user_email: '',
         user_password: '',
         user_mobile: '',
         refer_user_id: '',
-        user_district: '',
-        user_subdistrict: '',
-        user_village: ''
+        district_code: '',
+        sub_district_code: '',
+        village_code: ''
     });
     const [isReferralValid, setIsReferralValid] = useState(null);
-    const [errorMessage, setErrorMessage] = useState("");
+    // const [errorMessage, setErrorMessage] = useState("");
     // const [stateId, setStateId] = useState('');
     const [districts, setDistricts] = useState([]);
     const [subDistricts, setSubDistricts] = useState([]);
@@ -50,20 +49,21 @@ const Signup = () => {
                 user_email: { required: 'Please enter your email', email: 'Enter a valid email' },
                 user_password: { required: 'Please enter a password', minlength: 'At least 6 characters' },
                 user_mobile: { required: 'Please enter your mobile number', digits: 'Only numbers allowed', minlength: 'Must be 10 digits', maxlength: 'Must be 10 digits' },
-                refer_user_id: { required: 'Please enter your mobile number', digits: 'Only numbers allowed', minlength: 'Must be 10 digits', maxlength: 'Must be 10 digits' },
+                refer_user_id: { required: 'Please enter your referral mobile', digits: 'Only numbers allowed', minlength: 'Must be 10 digits', maxlength: 'Must be 10 digits' },
             },
         });
     }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-        
-        if(name === 'refer_user_id'){
-            setReferralCode(value)
+        setFormData(value);
+        if (name === "refer_user_id") {
+            setReferralCode(value);
+            setIsReferralValid(null);
+            setUsers([]); // Reset user list when input changes
+ 
         }
     };
-
  
 
     useEffect(()=>{
@@ -82,51 +82,44 @@ const Signup = () => {
     }
    }, [selectedSubDistrict])
 
-    const checkReferralCode = async () => {
-        if(!referralCode) return;
-        try {
-            
-            const res = await axios.post('https://mrcartonline.com/kitty/index.php/User/getUserDetailbyMobile', 
-             { user_mobile: referralCode }
-            );
+   const checkReferralCode = async () => {
+    if (!referralCode.trim()) {
+        return;
+    }
 
-            console.log("Referral api",res.data);
-
-            if (res.data?.status && Array.isArray(res.data.data) && res.data.data.length > 0) {
-                const fetchedUsername = res.data.data[0].user_name || ""
-                setIsReferralValid(true);
-                setErrorMessage("");
-                setUserName(fetchedUsername); 
-                console.log(res.data.data[0].user_name);
-
-                setFormData((prevData)=>({
-                    ...prevData,
-                    user_name: fetchedUsername
-                }))
-
-            } else {
-                setIsReferralValid(false);
-                setUserName("");
-                setErrorMessage("Invalid referral code. Please enter a valid one.");
+    try {
+        console.log("Sending request with user_mobile:", referralCode);
+        const res = await axios.post(
+            "https://mrcartonline.com/kitty/index.php/User/getUserDetailbyMobile",
+            { user_mobile: referralCode },
+            {
+                headers:{
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             }
-        } catch (error) {
+        );
+
+        console.log("API Response:", res.data.data);
+
+        if (res.data?.status && Array.isArray(res.data.data) && res.data.data.length > 0) {
+            setUsers(res.data.data);
+            setIsReferralValid(true);
+            // setErrorMessage("");
+        } else {
+            console.warn("Invalid Referral Code", res.data);
+            setUsers([]);
             setIsReferralValid(false);
-            setErrorMessage("Failed to verify referral code. Try again later.");
+            // setErrorMessage("Invalid referral code.");
         }
-    };
+    } catch (error) {
+        console.error("API Error:", error);
+        setUsers([]);
+        setIsReferralValid(false);
+        // setErrorMessage("Failed to verify referral code. Try again later.");
+    }
+};
 
-    // const debouncedCheckReferralCode = debounce(checkReferralCode, 800);
-    // const handleInputChange = (e) => {
-    //     const mobileNumber = e.target.value;
-    //     setReferralCode(mobileNumber);
-    //     debouncedCheckReferralCode(mobileNumber);
-    // };
 
-    // useEffect(() => {
-    //     return () => {
-    //         debouncedCheckReferralCode.cancel();
-    //     };
-    // }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -134,7 +127,7 @@ const Signup = () => {
     
         try {
             const res = await axios.post('https://mrcartonline.com/kitty/index.php/User/member_registration', formData);
-            // console.log('API Response:', res.data);
+  
     
             if (res.data?.status) {
                 await Swal.fire({
@@ -146,6 +139,7 @@ const Signup = () => {
              
                 // console.log(res.data);
                 localStorage.setItem('userId', res.data.userId);
+                // localStorage.setItem('userName', res.data.userName);
                 navigate('/login');
             } else {
                 Swal.fire({
@@ -161,7 +155,7 @@ const Signup = () => {
                 title: 'Error!',
                 text: error.response?.data?.message || 'Something went wrong!',
                 icon: 'error',
-                confirmButtonText: 'OK',
+                confirmButtonText: 'OK',    
             });
         } finally {
             setLoading(false);
@@ -251,7 +245,7 @@ const Signup = () => {
                     </div>
                     <div className='row pt-3 pt-md-4'>
                         <div className='col-md-8 mx-auto'>
-                            <input type="text" className='w-100 border-0 border-bottom border-1 border-secondary' name="user_mobile" placeholder="MOBILE" value={formData.user_mobile} onChange={handleChange} id='user_mobile' required />
+                            <input type="number" className='w-100 border-0 border-bottom border-1 border-secondary' name="user_mobile" placeholder="MOBILE" value={formData.user_mobile} onChange={handleChange} id='user_mobile' required />
                         </div>
                         {/* <div className='col-md-8 mx-auto d-none'>
                             <input type="text" className='w-100 border-0 border-bottom border-1 border-secondary' name="user_name" placeholder="USER NAME" value={formData.user_name} id='user_name' disabled />
@@ -272,25 +266,62 @@ const Signup = () => {
                    
                  
                     <div className='row pt-3 pt-md-4'>
-                        <div className='col-md-8 mx-auto'>
-                            {/* <h6><label htmlFor="refer_user_id" className="form-label mb-0">Referral Code</label></h6> */}
+                       
+                            <div className="col-md-8 mx-auto">
+                                <input
+                                    type="text"
+                                    className="w-100 border-0 border-bottom border-1 border-secondary"
+                                    name="refer_user_id"
+                                    placeholder="REFERRAL MOBILE NO"
+                                    value={referralCode}
+                                    onChange={handleChange}
+                                    onKeyUp={checkReferralCode} 
+                                    id="refer_user_id"
+                                />
+                            </div>
+         
+                    </div>
+                    {/* {errorMessage && (
+                                <div className="row pt-2">
+                                    <div className="col-md-8 mx-auto">
+                                        <p className="text-danger">{errorMessage}</p>
+                                    </div>
+                                </div>
+                   )} */}
+
+                    {isReferralValid && users.length > 0 ? (
+                users.map((user, index) => (
+                    <div className="row pt-3 pt-md-4" key={index}>
+                        <div className="col-md-8 mx-auto">
                             <input
                                 type="text"
-                                className='w-100 border-0 border-bottom border-1 border-secondary'
-                                name="refer_user_id"
-                                placeholder="REFERRAL MOBILE NO"
-                                value={referralCode}
-                                onChange={handleChange}
-                               onBlur={checkReferralCode}
-                                id='refer_user_id'
+                                className="w-100 border-0 border-bottom border-1 border-secondary"
+                                name="user_name"
+                                placeholder="USER NAME"
+                                value={user.user_name || ""} 
+                                id={`user_name_${index}`}
+                                readOnly
                             />
                         </div>
-                        { isReferralValid &&(
-                             <div className='col-md-8 mx-auto'>
-                             <input type="text" className='w-100 border-0 border-bottom border-1 border-secondary' name="user_name" placeholder="USER NAME" value={formData.user_name} id='user_name' readOnly />
-                         </div>
-                        )}
                     </div>
+                ))
+            ) :     <div className="row pt-3 pt-md-4">
+            <div className="col-md-8 mx-auto">
+                <input
+                    type="text"
+                    className="w-100 border-0 border-bottom border-1 border-secondary"
+                    name="user_name"
+                    placeholder="REFERRAL NAME"
+                    value=""
+                    id="user_name_initial"
+                    readOnly
+                />
+            </div>
+        </div>
+    }
+
+                
+
 
                  
 
@@ -298,11 +329,11 @@ const Signup = () => {
                         <div className='col-md-8 mx-auto'>
                           
                            <select className="form-select w-100 rounded-0 ps-0 border-0 border-bottom border-1 border-secondary"
-                           name='user_district'
+                           name='district_code'
                             onChange={(e) =>{
                                 const districtId = e.target.value;
                                 setSelectedDistrict(districtId);
-                                setFormData((prev)=>({...prev, user_district: districtId, user_subdistrict: '', user_village: ''}))
+                                setFormData((prev)=>({...prev, district_code: districtId, sub_district_code: '', village_code: ''}))
                             }} aria-label="Select District">
                               <option value="">Select District</option>
                               {districts.map((district, index)=>(
@@ -316,11 +347,11 @@ const Signup = () => {
                         <div className='col-md-8 mx-auto'>
                           
                            <select class="form-select w-100 rounded-0 ps-0 border-0 border-bottom border-1 border-secondary"
-                           name='user_subdistrict'
+                           name='sub_district_code'
                            onChange={(e)=>{
                             const subDistrictId = e.target.value;
                             setSelectedSubDistrict(subDistrictId)
-                            setFormData((prev)=>({...prev, user_subdistrict: subDistrictId, user_village: ''}))
+                            setFormData((prev)=>({...prev,  sub_district_code: subDistrictId, village_code: ''}))
                            }} aria-label="Default select example">
                                     <option value="">Select Tehasil</option>
                                    {subDistricts.map((subdistrict, index)=>(
@@ -333,9 +364,9 @@ const Signup = () => {
                     <div className='row pt-3 pt-md-4'>
                         <div className='col-md-8 mx-auto'>
                            <select class="form-select w-100 rounded-0 ps-0 border-0 border-bottom border-1 border-secondary"
-                           name='user_village'
+                           name='village_code'
                            onChange={(e)=>{
-                            setFormData((prev)=>({...prev, user_village: e.target.value}));
+                            setFormData((prev)=>({...prev, village_code: e.target.value}));
                            }} aria-label="Default select example">
                                     <option value="">Select Village</option>
                                    {villages.map((village, index)=>(
@@ -348,7 +379,7 @@ const Signup = () => {
                     <div className='user-note py-2 text-center'>Already a user? <NavLink to='/login' >Login</NavLink></div>
                     <div className='row justify-content-center '>
                         <div className='col-6 col-md-4 mx-0 px-1'>
-                            <button type="submit" className='btn btn-primary sign-text py-0 w-100 rounded-pill' disabled={loading || isReferralValid === false}>
+                            <button type="submit" className='btn btn-primary sign-text py-0 w-100 rounded-pill' disabled={loading}>
                                 {loading ? 'Signing up...' : 'SUBMIT'}
                             </button>
                         </div>

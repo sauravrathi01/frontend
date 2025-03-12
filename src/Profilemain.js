@@ -83,7 +83,7 @@ const Profilemain = ({ }) => {
                         name="user_email" value={userData.user_email} onChange={handleChange} />
                 </div>
                 <div className="col-md-6 mx-auto my-1">
-                    <input type="text" className="bg-white w-100" placeholder="Aadhar Card"
+                    <input type="number" className="bg-white w-100" placeholder="Aadhar Card"
                         name="aadhar" value={userData.aadhar} onChange={handleChange} />
                 </div>
                 <div className="col-md-6 mx-auto my-1">

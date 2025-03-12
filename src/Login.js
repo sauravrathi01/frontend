@@ -25,6 +25,8 @@ const Login = ({ setIsLoggedIn }) => {
             setIsLoggedIn(true);
             navigate("/");
         }
+        const storedUserName = localStorage.getItem("userName");
+        console.log(storedUserName);
 
         $("#loginForm").validate({
             rules: {
@@ -120,7 +122,7 @@ const Login = ({ setIsLoggedIn }) => {
                     <div className="row pt-3">
                         <div className="col-md-8 mx-auto">
                             <input
-                                type="text"
+                                type="number"
                                 className="border border-secondary border-2 ps-1 rounded-0 form-control"
                                 name="user_mobile"
                                 placeholder="Mobile"

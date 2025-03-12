@@ -31,7 +31,7 @@ function ShopList({}){
         <>
 
 <section className="shop_section">
-  <div className="container-fluid">
+  <div className="container-fluid p-0">
     <div className="row shop_card"> 
       {data.map((item) => (
         <div key={item.id} className="col-12 col-md-6 shop_list"> 
@@ -42,7 +42,7 @@ function ShopList({}){
           </div>
           <div className="icon">
             <a href={`tel:${item.shop_contact}`}>
-              <img src="https://img.icons8.com/ios-filled/50/000000/phone.png" alt="Call Icon" />
+              <img className='icon-img' src="https://img.icons8.com/ios-filled/50/000000/phone.png" alt="Call Icon" />
             </a>
           </div>
         </div>

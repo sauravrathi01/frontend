@@ -13,7 +13,7 @@ const Profile = () => {
 //   const storedUserId = localStorage.getItem("user_id");
 // console.log("Stored User ID:", storedUserId);
 
-const availBalance = Number(localStorage.getItem("avail_balance"));
+const availBalance = Number(localStorage.getItem("avail_balance")).toFixed(2);
 
 
 
@@ -21,7 +21,7 @@ const availBalance = Number(localStorage.getItem("avail_balance"));
 const fetchList = async () => {
   try {
     // const storedUserId = localStorage.getItem("user_id");
-    const storedUserId = '10000';
+    const storedUserId = localStorage.getItem("user_id");
 
     if (!storedUserId) {
       console.error("No user_id found in localStorage");
@@ -93,7 +93,7 @@ useEffect(() => {
              <h5><i class="fa-solid fa-coins text-warning"></i>
                 </h5>
                 {/* <h6 className="text-center">{userData?.availBalance ?? "N/A"}</h6> */}
-                <h6 className="text-center">{userData?.availPoints ?? "N/A"}</h6>
+                <h6 className="text-center">{userData?.availPoints ?? "0"}</h6>
                 <div className="profile-text1">AVAILABLE POINTS</div>
              </div>
             </div>
@@ -117,7 +117,7 @@ useEffect(() => {
             <NavLink to="/user-profile" className="text-decoration-none text-dark col-8 ps-0 my-auto text-start">
            <div className="profile-text2 ms-2">Personal Details</div>
             </NavLink>
-            <div className="col-2"></div>
+            <div className="col-2 "></div>
             <div className="col-1 text-end pe-0 my-auto">
        
               <h6><i class="fa-regular fa-circle-right logotext"></i></h6>
@@ -129,10 +129,10 @@ useEffect(() => {
             <i class="fa-solid fa-grip-vertical"></i>
            </div>
      
-            <div className="col-8 ps-0 my-auto text-start">
-           <div className="profile-text2 ms-2">Reward Points</div>
-            </div>
-            <div className="col-2">{userData?.availPoints ?? "N/A"}</div>
+            <NavLink to="/redeem-points" className="text-decoration-none text-dark col-8 ps-0 my-auto text-start">
+           <div className="profile-text2 ms-2" availPoints={userData?.availPoints}>Reward Points</div>
+            </NavLink>
+            <div className="col-2 ps-0">{userData?.availPoints ?? "0"}</div>
             <div className="col-1 text-end pe-0 my-auto">
        
               <h6><i class="fa-regular fa-circle-right logotext"></i></h6>
@@ -146,7 +146,7 @@ useEffect(() => {
             <div className="col-8 ps-0 my-auto text-start">
            <div className="profile-text2 ms-2">My Active Referrals</div>
             </div>
-            <div className="col-2">{userData?.activeDirectReferral ?? "N/A"}</div>
+            <div className="col-2 ps-0">{userData?.activeDirectReferral ?? "0"}</div>
             <div className="col-1 text-end pe-0 my-auto">
        
               <h6><i class="fa-regular fa-circle-right logotext"></i></h6>
@@ -160,7 +160,7 @@ useEffect(() => {
             <div className="col-8 ps-0 my-auto text-start">
            <div className="profile-text2 ms-2">My In-Active Referrals</div>
             </div>
-            <div className="col-2">{userData?.inactiveDirectReferral ?? "N/A"}</div>
+            <div className="col-2 ps-0">{userData?.inactiveDirectReferral ?? "0"}</div>
             <div className="col-1 text-end pe-0 my-auto">
        
               <h6><i class="fa-regular fa-circle-right logotext"></i></h6>
@@ -174,7 +174,7 @@ useEffect(() => {
             <div className="col-8 ps-0 my-auto text-start">
            <div className=" profile-text2 ms-2" style={{cursor: 'pointer'}}>My Total Orders</div>
             </div>
-            <div className="col-2">{userData?.totalOrders ?? "N/A"}</div>
+            <div className="col-2 ps-0">{userData?.totalOrders ?? "0"}</div>
             <div className="col-1 text-end pe-0 my-auto">
        
               <h6><i class="fa-regular fa-circle-right logotext"></i></h6>

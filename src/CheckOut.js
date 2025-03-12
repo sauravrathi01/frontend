@@ -110,7 +110,7 @@ const handleProceed = async () => {
      finalAmount: finalAmount,
       "user_id": "10002",
       "store_id": "1",
-      "order_address": "fg, fff, rft, - 411028",
+      "order_address": "",
       "location_id": "1",
       "bill_amount": "288.0",
       "payment_type": "2",

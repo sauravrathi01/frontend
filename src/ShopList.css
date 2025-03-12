@@ -1,6 +1,6 @@
 
 .shop_section {
-    margin-top: 150px; /* Reduce the margin for mobile view */
+    margin-top: 70px; 
     padding: 10px;    /* Adjust padding */
 }
 
@@ -9,7 +9,7 @@
     border-radius: 10px;
     padding: 20px; /* Adjust padding for better spacing */
     display: flex;
-    margin-bottom: 15px; /* Add space between cards */
+    margin-bottom: 15px; 
     justify-content: space-between;
 }
 
@@ -34,16 +34,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     border: 2px solid #000;
     border-radius: 50%;
     margin-top:16px;
 }
 
-.icon img {
-    width: 24px;
-    height: 24px;
+.icon-img {
+    width: 16px;
+    height: 16px;
 }
 
 .icon:hover {
@@ -52,7 +52,7 @@
 
 @media (max-width: 767px) {
       .shop_section {
-    margin-top: 100px; /* Reduce the margin for mobile view */
+    margin-top: 50px; /* Reduce the margin for mobile view */
     padding: 10px;    /* Adjust padding */
     margin-bottom:150px;
 }
@@ -76,12 +76,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
     border: 2px solid #000;
     border-radius: 50%;
     margin-top: 20px;
 }
+
+.icon-img {
+    width: 13px !important;
+    height: 13px !important;
+    padding-bottom: 2px;
+}
+
+.shop_card{
+    gap: 0px !important;
+    margin: 0px auto;
+  }
+
 }
 .shop_section .container-fluid {
     display: flex;
@@ -90,7 +102,7 @@
 
   }
   .shop_card{
-    margin: 0px auto;
+    /* margin: 0px auto; */
     justify-content: center;
     gap: 20px;
   }

@@ -1,4 +1,6 @@
 
+
+
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -10,25 +12,18 @@ const SubscribeUser = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("");
-
-
   const [storedUserId, setStoredUserId] = useState(localStorage.getItem("user_id"));
-//   const userId = localStorage.getItem("user_id"); 
   const hasFetched = useRef(false);
 
-  useEffect(() => {
-    // console.log("🚀 Component rendered at:", new Date().toISOString());
-    let isMounted = true; // Prevent state updates after unmount
 
-    if (!storedUserId || hasFetched.current) return; // Ensure API runs only once
-    hasFetched.current = true; // Mark as fetched
+  const availBalance = Number(localStorage.getItem("avail_balance")) || 0;
+
+  useEffect(() => {
+    if (!storedUserId || hasFetched.current) return;
+    hasFetched.current = true;
 
     const fetchUsers = async () => {
-        
-    
       try {
-        // console.log("User ID:", storedUserId);
-        
         const response = await axios.post(
           "https://mrcartonline.com/kitty/index.php/User/getBmartUsers",
           { user_id: storedUserId },
@@ -38,15 +33,14 @@ const SubscribeUser = () => {
             },
           }
         );
-        // console.log("✅ API Response:", response.data);
+
         if (response.data.status) {
-            const uniqueUsers = response.data.data.filter(
-              (user, index, self) =>
-                index === self.findIndex((u) => u.user_id === user.user_id)
-            );
-            setUsers(uniqueUsers);
-          }
-         else {
+          const uniqueUsers = response.data.data.filter(
+            (user, index, self) =>
+              index === self.findIndex((u) => u.user_id === user.user_id)
+          );
+          setUsers(uniqueUsers);
+        } else {
           setError(response.data.message || "No users found.");
         }
       } catch (error) {
@@ -55,50 +49,123 @@ const SubscribeUser = () => {
         setLoading(false);
       }
     };
-  
 
     fetchUsers();
-
   }, [storedUserId]);
 
   const handlePaymentChange = (event) => {
     setSelectedPayment(event.target.value);
   };
 
-  const handleSlotClick = (balance) => {
-    if (selectedPayment === "wallet" && balance < 999) {
+  // const handleWalletPayment = async (user) => {
+  //   if(user.avail_balance >= 999){
+  //     const newBalance = user.avail_balance - 999; 
+  //   }
+  //   try {
+     
+  //     await axios.post(
+  //       "https://mrcartonline.com/kitty/index.php/User/updateWalletBalance",
+  //       {
+  //         user_id: user.user_id,
+  //         new_balance: newBalance,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/x-www-form-urlencoded",
+  //         },
+  //       }
+  //     );
+
+  //     localStorage.setItem("avail_balance", newBalance);
+
+  //     setUsers((prevUsers) =>
+  //       prevUsers.map((u) =>
+  //           u.user_id === user.user_id ? { ...u, avail_balance: newBalance } : u
+  //       )
+  //   );
+
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "Payment Successful",
+  //       text: `&#8377;999 deducted from wallet.`,
+  //       customClass: {
+  //         popup: "custom-swal-popup", 
+  //     },
+  //     });
+  //     setSelectedPayment("");
+  //   } catch (error) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Transaction Failed",
+  //       text: "Failed to deduct balance. Try again.",
+  //     });
+  //   } else {
+  //     Swal.fire({
+  //         icon: "error",
+  //         title: "Oops...",
+  //         text: "Insufficient Balance!",
+  //         customClass: {
+  //             popup: "custom-swal-popup",
+  //         },
+  //     });
+  // }
+  // };
+
+
+  const handleWalletPayment = async (user) => {
+    if (availBalance >= 999) {
+      let newBalance = availBalance - 999;
+      localStorage.setItem("avail_balance", newBalance);
+
+      Swal.fire({
+        icon: "success",
+        title: "Payment Successful",
+        text: `₹${999} has been deducted from your wallet.`,
+        customClass: {
+          popup: "custom-swal-popup", 
+      },
+      });
+
+      setSelectedPayment("");
+    } else {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Insufficient Balance!",
+        customClass: {
+          popup: "custom-swal-popup", 
+          
+      },
       });
-      return;
+    }
+};
+
+
+
+
+  const handleSlotClick = (user) => {
+    if (selectedPayment === "wallet") {
+      handleWalletPayment(user);
+      
+    } else if (selectedPayment === "online") {
+      handleRazorpayPayment(user);
     }
   };
 
-  const handleRazorpayPayment = async () => {
-    if (!storedUserId) {
-      Swal.fire({
-        icon: "error",
-        title: "User ID Missing",
-        text: "Please log in again.",
-      });
-      return;
-    }
-
-    const user = users[0];
-
+  const handleRazorpayPayment = async (user) => {
     try {
       const options = {
         key: "rzp_live_w6fv8fQgqoPYMw",
-        amount: 999 * 100, // Amount in paise
+        amount: 999 * 100,
         currency: "INR",
         name: user.user_name,
         description: "Subscription Payment",
-        handler: async function (response) {
-          // console.log("Payment Details:", response);
-          
-          // Step 3: Verify Payment with Backend (if required)
+        handler: function (response) {
+          Swal.fire({
+            icon: "success",
+            title: "Payment Successful",
+            text: "Online payment completed!",
+          });
         },
         prefill: {
           name: user.user_name,
@@ -107,7 +174,6 @@ const SubscribeUser = () => {
         },
         notes: {
           user_id: storedUserId,
-        //   soolegal_order_id: "123",
         },
         theme: {
           color: "#3399cc",
@@ -117,7 +183,6 @@ const SubscribeUser = () => {
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (error) {
-      console.error("Payment Error:", error);
       Swal.fire({
         icon: "error",
         title: "Payment Error",
@@ -142,7 +207,7 @@ const SubscribeUser = () => {
           {users.map((user, index) => (
             <div key={index} className="col-12">
               <div className="col-12 text-center my-2">
-                <h5> &#8377;{user.avail_balance}</h5>
+                <h5> &#8377;{availBalance.toFixed(2)}</h5>
               </div>
               <div className="row justify-content-center">
                 <div className="col-10 col-md-6 my-2">
@@ -178,13 +243,7 @@ const SubscribeUser = () => {
                 </div>
                 <div className="row justify-content-center my-4">
                   <div className="col-5 col-md-2">
-                    <button className="border-0 slot-btn1 py-1 w-100 rounded-pill" onClick={() => {
-                      if (selectedPayment === "wallet") {
-                        handleSlotClick(user.avail_balance);
-                      } else if (selectedPayment === "online") {
-                        handleRazorpayPayment();
-                      }
-                    }}>
+                    <button className="border-0 slot-btn1 py-1 w-100 rounded-pill" onClick={() => handleSlotClick(user)}>
                       Create Slot
                     </button>
                   </div>
